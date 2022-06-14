@@ -1,0 +1,58 @@
+.image {
+    position: fixed;
+    left: 45vw;
+    top: 30vh;
+    width: auto;
+    height: clamp(200px, 20vw, 20vw);
+    object-fit: cover;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.title-item {
+    position: relative;
+}
+
+.menu-title {
+    font-family: "Roboto", sans-serif;
+    font-size: 8.5vw;
+    text-transform: lowercase;
+    z-index: 1;
+    line-height: 1;
+}
+
+.info-block {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 70vw;
+    z-index: 1;
+    text-align: left;
+    font-size: 20px;
+
+    &-header {
+        margin-bottom: 20px;
+        color: #000;
+        font-weight: 500;
+        font-size: 24px;
+
+        span {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    p {
+        margin-bottom: 10px;
+        overflow: hidden;
+        color: #999;
+
+        span {
+            display: block;
+            opacity: 0;
+            transition-property: all;
+            transition-duration: .25s;
+            transition-timing-function: ease-in-out;
+        }
+    }
+}
