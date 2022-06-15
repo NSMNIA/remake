@@ -37,21 +37,19 @@ const Home = (props: Props) => {
     }
 
     useEffect(() => {
-        const clonesHeight = cloneItems();
-        initScroll();
-        const scrollUpdate = () => {
-            const scrollPos = getScrollPosition();
-            if (clonesHeight + scrollPos >= menuItems.current?.scrollHeight) {
-                setScrollPosition(1);
-            } else if (scrollPos <= 0) {
-                setScrollPosition(menuItems.current.scrollHeight - clonesHeight);
-            }
-        }
-
-        menuItems.current?.addEventListener('scroll', scrollUpdate);
-
+        // const clonesHeight = cloneItems();
+        // initScroll();
+        // const scrollUpdate = () => {
+        //     const scrollPos = getScrollPosition();
+        //     if (clonesHeight + scrollPos >= menuItems.current?.scrollHeight) {
+        //         setScrollPosition(1);
+        //     } else if (scrollPos <= 0) {
+        //         setScrollPosition(menuItems.current.scrollHeight - clonesHeight);
+        //     }
+        // }
+        // menuItems.current?.addEventListener('scroll', scrollUpdate);
         return () => {
-            menuItems.current?.removeEventListener('scroll', scrollUpdate)
+            // menuItems.current?.removeEventListener('scroll', scrollUpdate)
         }
     }, [])
 

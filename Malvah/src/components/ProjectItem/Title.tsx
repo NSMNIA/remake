@@ -1,13 +1,17 @@
-import { FC } from "react";
+import { FC, MouseEventHandler } from "react";
 import STYLE from './projectItem.module.scss';
 
 interface ProjectTitleProps {
-    title: string
+    title: string,
+    handleMouseEnter: MouseEventHandler,
+    handleMouseLeave: MouseEventHandler
 }
 
-const ProjectTitle: FC<ProjectTitleProps> = ({ title }) => {
+const ProjectTitle: FC<ProjectTitleProps> = ({ title, handleMouseEnter, handleMouseLeave }) => {
     return (
-        <div className={STYLE['title-item']}>
+        <div className={STYLE['title-item']}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}>
             <h1 className={STYLE['menu-title']}>
                 {title}
             </h1>
