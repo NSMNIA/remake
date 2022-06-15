@@ -16,6 +16,9 @@ const initialState = {
         x: 0,
         y: -20
     },
+    scale: .8,
+    rotationPos: 0,
+    active: false
 }
 
 const reducer = (state: any, action: any) => {
@@ -30,6 +33,30 @@ const reducer = (state: any, action: any) => {
             return {
                 ...state,
                 parallexPos: action.payload
+            }
+        }
+        case "CHANGE/ROTATION": {
+            return {
+                ...state,
+                rotationPos: action.payload
+            }
+        }
+        case "CHANGE/SCALE": {
+            return {
+                ...state,
+                scale: action.payload
+            }
+        }
+        case "MOUSE/ENTER": {
+            return {
+                ...state,
+                active: true
+            }
+        }
+        case "MOUSE/LEAVE": {
+            return {
+                ...state,
+                active: false
             }
         }
         default: {
@@ -57,7 +84,6 @@ const ProjectItem: FC<ProjectItemProps> = ({ project, index }) => {
         const speed = -5;
         const x = (window.innerWidth - e.pageX * speed) / 100;
         const y = (window.innerHeight - e.pageY * speed) / 100;
-        // throttle dispatch to prevent too many events
         dispatch({
             type: "MOUSE/COORDINATES",
             payload: {
@@ -80,26 +106,59 @@ const ProjectItem: FC<ProjectItemProps> = ({ project, index }) => {
         })
     }
 
+    const handleScale = (initialScale: number, newScale: number, duration: number) => {
+        animate({
+            fromValue: initialScale,
+            toValue: newScale,
+            duration,
+            onUpdate: (newScale: number, callback: any) => {
+                dispatch({ type: 'CHANGE/SCALE', payload: newScale });
+                callback();
+            },
+            onComplete: () => { },
+        })
+    }
+
+    const handleRotation = (currentRotation: number, duration: number) => {
+        const newRotation = Math.random() * 15 * (Math.round(Math.random()) ? 1 : -1);
+        animate({
+            fromValue: currentRotation,
+            toValue: newRotation,
+            duration,
+            onUpdate: (newRotation: number, callback: any) => {
+                dispatch({ type: 'CHANGE/ROTATION', payload: newRotation });
+                callback();
+            },
+            onComplete: () => { },
+        })
+    }
+
     const handleMouseEnter = () => {
+        handleScale(.8, 1, 500);
         handleOpacity(0, 1, 500);
-        listItem.current?.addEventListener('mousemove', throttle(parallex, 250))
+        handleRotation(state.rotationPos, 500);
+        listItem.current?.addEventListener('mousemove', parallex)
+        dispatch({ type: 'MOUSE/ENTER' })
     }
 
     const handleMouseLeave = () => {
-        listItem.current?.removeEventListener('mousemove', throttle(parallex, 250))
+        listItem.current?.removeEventListener('mousemove', parallex)
         handleOpacity(1, 0, 800);
+        handleScale(1, initialState.scale, 500);
+        handleRotation(state.rotationPos, 500);
         dispatch({
             type: 'MOUSE/COORDINATES',
             payload: initialState.parallexPos
         })
+        dispatch({ type: 'MOUSE/LEAVE' })
     }
 
     return <li ref={listItem}>
         <ProjectTitle title={project.title} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
-        <ProjectImage url={project.url} alt={project.title} opacity={state.opacity} parallexPos={state.parallexPos} />
+        <ProjectImage url={project.url} alt={project.title} opacity={state.opacity} parallexPos={state.parallexPos} scale={state.scale} rotationPos={state.rotationPos} />
 
-        <div className={STYLE["info-block"]}>
-            <p className={STYLE["info-block--header"]}>
+        <div className={state.active ? `${STYLE["info-block"]} ${STYLE["active"]}` : STYLE["info-block"]}>
+            <p className={STYLE["info-block-header"]}>
                 <span>
                     #{index + 1}
                 </span>

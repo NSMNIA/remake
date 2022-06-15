@@ -13,7 +13,7 @@ export const pageData = [
         title: "RFC Maastricht",
         info: ["Development", "Design"],
     }, {
-        url: "https://revolveddesign.com/assets/images/projects/case-study/cleanrs-3.webp",
+        url: "https://revolveddesign.com/assets/images/projects/cleanrs.webp",
         title: "Cleanrs",
         info: ["Design", "Concept"],
     }

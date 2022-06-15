@@ -15,6 +15,9 @@ const ProjectTitle: FC<ProjectTitleProps> = ({ title, handleMouseEnter, handleMo
             <h1 className={STYLE['menu-title']}>
                 {title}
             </h1>
+            <h1 className={`${STYLE['menu-title']} ${STYLE['clone']}`}>
+                {title}
+            </h1>
         </div>
     )
 }
