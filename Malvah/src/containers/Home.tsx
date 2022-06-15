@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
 import ProjectItem from "../components/ProjectItem";
 import { pageData } from '../data';
 
@@ -37,31 +35,29 @@ const Home = (props: Props) => {
     }
 
     useEffect(() => {
-        // const clonesHeight = cloneItems();
-        // initScroll();
-        // const scrollUpdate = () => {
-        //     const scrollPos = getScrollPosition();
-        //     if (clonesHeight + scrollPos >= menuItems.current?.scrollHeight) {
-        //         setScrollPosition(1);
-        //     } else if (scrollPos <= 0) {
-        //         setScrollPosition(menuItems.current.scrollHeight - clonesHeight);
-        //     }
-        // }
-        // menuItems.current?.addEventListener('scroll', scrollUpdate);
+        const clonesHeight = cloneItems();
+        initScroll();
+        const scrollUpdate = () => {
+            const scrollPos = getScrollPosition();
+            if (clonesHeight + scrollPos >= menuItems.current?.scrollHeight) {
+                setScrollPosition(1);
+            } else if (scrollPos <= 0) {
+                setScrollPosition(menuItems.current.scrollHeight - clonesHeight);
+            }
+        }
+        menuItems.current?.addEventListener('scroll', scrollUpdate);
         return () => {
-            // menuItems.current?.removeEventListener('scroll', scrollUpdate)
+            menuItems.current?.removeEventListener('scroll', scrollUpdate)
         }
     }, [])
 
     return (
         <>
-            <Header />
             <div className="main-container">
                 <ul ref={menuItems}>
                     {renderItems?.map((project, index) => <ProjectItem key={index} project={project} index={index} />)}
                 </ul>
             </div>
-            <Footer />
         </>
     )
 }
