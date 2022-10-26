@@ -1,4 +1,5 @@
 import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import { useEffect } from "react";
 import styled from "styled-components";
 import Iphone1 from '../../assets/iphone-1.png';
@@ -27,6 +28,7 @@ const Wrapper = styled.div`
     grid-auto-columns: 2fr 1fr 2fr;
     grid-template-rows: repeat(1, 1fr);
     align-items: center;
+    position: relative;
 `
 
 const Text = styled.div`
@@ -37,10 +39,11 @@ const Text = styled.div`
 const Image = styled.div`
     grid-row: 1;
     grid-column: 2 / span 1;
-    align-self: center;
-    justify-self:center;
+    align-self: flex-end;
+    justify-self:flex-end;
     text-align: center;
     max-width: 100%;
+    z-index: 3;
 
     &.iphone-1 img {
         width: 100%;
@@ -56,22 +59,23 @@ const InnerImage = styled.div`
 
 const Image1 = styled.img`
     position: absolute;
-    z-index: 2;
+    z-index: 3;
 `
 
 const ImageStick = styled.img`
     display: none;
     position: absolute;
-    left: 54.5%;
+    left: 50%;
 `
 
 const ImageBehind = styled.img`
-    z-index: 1;
+    z-index: 2;
     position: relative;
 `
 
 const Text2 = styled.div`
     grid-column: 3;
+    z-index: 1;
 `
 
 const Images = styled.div`
@@ -80,37 +84,89 @@ const Images = styled.div`
 
 const Main = () => {
     useEffect(() => {
-        gsap.timeline({
+        ScrollTrigger.refresh();
+        let scene = gsap.timeline({
             scrollTrigger: {
                 trigger: "#grid",
-                start: "top top",
+                start: "top center",
                 end: "bottom center",
                 scrub: 1,
-                markers: true,
             },
-        }).from("#wrapper", {
-            scale: 2.7,
-            transformOrigin: "center top",
-        }).to("#wrapper", {
-            scale: 1,
         });
-
-        gsap.timeline({
-            scrollTrigger: {
-                trigger: "#wrapper",
-                start: "-100 top",
-                end: "bottom center",
-                scrub: 1,
-                markers: true,
-                pin: true
-            },
-        }).from(".iphone-1", {
-            x: 0,
-            y: 0,
-        }).to(".iphone-1", {
-            x: "-50%",
+        scene.fromTo("#wrapper", {
+            scale: 2.7,
+            transformOrigin: "center center",
+        }, {
+            scale: 1,
         })
 
+        let scene2 = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#wrapper",
+                start: "center center",
+                end: "bottom center",
+                scrub: 1,
+                markers: true,
+                pin: true,
+            },
+        }).fromTo(".iphone-1", {
+            x: 0,
+            y: 0,
+        }, {
+            x: "-50%"
+        }).fromTo(".iphone-2", {
+            x: 0,
+            y: 0,
+        }, {
+            x: "50%"
+        }).fromTo(".iphone-text-1", {
+            autoAlpha: 0,
+        }, {
+            autoAlpha: 1,
+            x: "-30%"
+        }, "-=1").fromTo(".iphone-text-2", {
+            autoAlpha: 0,
+        }, {
+            autoAlpha: 1,
+            x: "30%"
+        }, "-=.5").fromTo(".iphone-stick", {
+            autoAlpha: 0,
+        }, {
+            display: "block",
+            autoAlpha: 1,
+        }).fromTo(".iphone-1-image", {
+            autoAlpha: 1,
+        }, {
+            autoAlpha: 0,
+        }).fromTo(".iphone-2-image", {
+            autoAlpha: 1,
+        }, {
+            autoAlpha: 0,
+        }, "-=.5").fromTo(".iphone-1-behind", {
+            autoAlpha: 0,
+        }, {
+            autoAlpha: 1,
+            x: "-54%"
+        }, "+=.5").fromTo(".iphone-2-behind", {
+            autoAlpha: 0,
+        }, {
+            autoAlpha: 1,
+            x: "54%"
+        }, "+=.5").fromTo(".iphone-text-1", {
+            autoAlpha: 1,
+        }, {
+            autoAlpha: 0,
+        }, "-=2").fromTo(".iphone-text-2", {
+            autoAlpha: 1,
+        }, {
+            autoAlpha: 0,
+        }, "-=2")
+
+
+        return () => {
+            scene.kill();
+            scene2.kill();
+        }
     }, [])
     return (
         <>
@@ -119,33 +175,36 @@ const Main = () => {
                     <H2>The custom OLED displays on iPhone&nbsp;X deliver the most accurate color in the industry, HDR, and true blacks. And iPhone&nbsp;XMax has our largest display ever on an&nbsp;iPhone.</H2>
                 </Grid>
             </section>
-            <section>
-                <Images id="wrapper">
-                    <Wrapper>
-                        <Text>
-                            <p>iPhone Xs Max</p>
-                            <p>6.5" dsiplay</p>
-                        </Text>
-                        <Image className="iphone-1">
-                            <InnerImage>
-                                <Image1 src={Iphone1} alt="" />
-                                <ImageStick src={Iphone3} alt="" />
-                                <ImageBehind src={IphoneLeft} alt="" />
-                            </InnerImage>
-                        </Image>
-                        <Image className="iphone-2">
-                            <InnerImage>
-                                <Image1 src={Iphone1} alt="" />
-                                <ImageBehind src={IphoneRight} alt="" />
-                            </InnerImage>
-                        </Image>
-                        <Text2>
-                            <p>iPhone Xs Max</p>
-                            <p>5.8" display</p>
-                        </Text2>
-                    </Wrapper>
-                </Images>
-            </section>
+            <div id="wrapper">
+                <section>
+                    <Images>
+                        <Wrapper>
+                            <Text className="iphone-text-1">
+                                <p>iPhone Xs Max</p>
+                                <p>6.5" dsiplay</p>
+                            </Text>
+                            <Image className="iphone-1">
+                                <InnerImage>
+                                    <Image1 src={Iphone1} alt="" className="iphone-1-image" />
+                                    <ImageStick src={Iphone3} alt="" className="iphone-stick" />
+                                    <ImageBehind src={IphoneLeft} alt="" className="iphone-1-behind" />
+                                </InnerImage>
+                            </Image>
+                            <Image className="iphone-2">
+                                <InnerImage>
+                                    <Image1 src={Iphone1} alt="" className="iphone-2-image" />
+                                    <ImageBehind src={IphoneRight} alt="" className="iphone-2-behind" />
+                                </InnerImage>
+                            </Image>
+                            <Text2 className="iphone-text-2">
+                                <p>iPhone Xs Max</p>
+                                <p>5.8" display</p>
+                            </Text2>
+                        </Wrapper>
+                    </Images>
+                </section>
+            </div>
+            <section style={{ height: "100vh" }}></section>
         </>
     )
 }
