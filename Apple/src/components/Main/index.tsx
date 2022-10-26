@@ -1,8 +1,23 @@
+import gsap from "gsap";
+import { useEffect } from "react";
 import styled from "styled-components";
 import Iphone1 from '../../assets/iphone-1.png';
 import Iphone3 from '../../assets/iphone-3.png';
 import IphoneLeft from '../../assets/iphone-left.png';
 import IphoneRight from '../../assets/iphone-right.png';
+
+const Grid = styled.div`
+    height: 80vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+`;
+
+const H2 = styled.h2`
+    grid-row: 7;
+    grid-column: 5 / span 4;
+    align-self: center;
+`;
 
 const Wrapper = styled.div`
     height: 100vh;
@@ -59,35 +74,79 @@ const Text2 = styled.div`
     grid-column: 3;
 `
 
+const Images = styled.div`
+    height: 100vh;
+`
+
 const Main = () => {
+    useEffect(() => {
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: "#grid",
+                start: "top top",
+                end: "bottom center",
+                scrub: 1,
+                markers: true,
+            },
+        }).from("#wrapper", {
+            scale: 2.7,
+            transformOrigin: "center top",
+        }).to("#wrapper", {
+            scale: 1,
+        });
+
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: "#wrapper",
+                start: "-100 top",
+                end: "bottom center",
+                scrub: 1,
+                markers: true,
+                pin: true
+            },
+        }).from(".iphone-1", {
+            x: 0,
+            y: 0,
+        }).to(".iphone-1", {
+            x: "-50%",
+        })
+
+    }, [])
     return (
-        <section>
-            <div>
-                <Wrapper>
-                    <Text>
-                        <p>iPhone Xs Max</p>
-                        <p>6.5" dsiplay</p>
-                    </Text>
-                    <Image className="iphone-1">
-                        <InnerImage>
-                            <Image1 src={Iphone1} alt="" />
-                            <ImageStick src={Iphone3} alt="" />
-                            <ImageBehind src={IphoneLeft} alt="" />
-                        </InnerImage>
-                    </Image>
-                    <Image className="iphone-2">
-                        <InnerImage>
-                            <Image1 src={Iphone1} alt="" />
-                            <ImageBehind src={IphoneRight} alt="" />
-                        </InnerImage>
-                    </Image>
-                    <Text2>
-                        <p>iPhone Xs Max</p>
-                        <p>5.8" display</p>
-                    </Text2>
-                </Wrapper>
-            </div>
-        </section>
+        <>
+            <section>
+                <Grid id='grid'>
+                    <H2>The custom OLED displays on iPhone&nbsp;X deliver the most accurate color in the industry, HDR, and true blacks. And iPhone&nbsp;XMax has our largest display ever on an&nbsp;iPhone.</H2>
+                </Grid>
+            </section>
+            <section>
+                <Images id="wrapper">
+                    <Wrapper>
+                        <Text>
+                            <p>iPhone Xs Max</p>
+                            <p>6.5" dsiplay</p>
+                        </Text>
+                        <Image className="iphone-1">
+                            <InnerImage>
+                                <Image1 src={Iphone1} alt="" />
+                                <ImageStick src={Iphone3} alt="" />
+                                <ImageBehind src={IphoneLeft} alt="" />
+                            </InnerImage>
+                        </Image>
+                        <Image className="iphone-2">
+                            <InnerImage>
+                                <Image1 src={Iphone1} alt="" />
+                                <ImageBehind src={IphoneRight} alt="" />
+                            </InnerImage>
+                        </Image>
+                        <Text2>
+                            <p>iPhone Xs Max</p>
+                            <p>5.8" display</p>
+                        </Text2>
+                    </Wrapper>
+                </Images>
+            </section>
+        </>
     )
 }
 

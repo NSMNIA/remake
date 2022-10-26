@@ -1,10 +1,10 @@
-import Header from "./components/Header"
-import Main from "./components/Main"
-
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import Main from "./components/Main";
 const App = () => {
+    gsap.registerPlugin(ScrollTrigger);
     return (
         <>
-            <Header />
             <Main />
         </>
     )
