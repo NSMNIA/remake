@@ -106,7 +106,6 @@ const Main = () => {
                 start: "center center",
                 end: "bottom top",
                 scrub: 1,
-                markers: true,
                 pin: true,
             },
         }).fromTo(".iphone-1", {
