@@ -39,8 +39,8 @@ const Text = styled.div`
 const Image = styled.div`
     grid-row: 1;
     grid-column: 2 / span 1;
-    align-self: flex-end;
-    justify-self:flex-end;
+    align-self: center;
+    justify-self:center;
     text-align: center;
     max-width: 100%;
     z-index: 3;
@@ -104,7 +104,7 @@ const Main = () => {
             scrollTrigger: {
                 trigger: "#wrapper",
                 start: "center center",
-                end: "bottom center",
+                end: "bottom top",
                 scrub: 1,
                 markers: true,
                 pin: true,
