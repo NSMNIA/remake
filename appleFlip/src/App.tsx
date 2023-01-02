@@ -1,6 +1,10 @@
+import ScrollPhotos from './components/Photos'
+
 const App = () => {
     return (
-        <div>App</div>
+        <div>
+            <ScrollPhotos />
+        </div>
     )
 }
 
