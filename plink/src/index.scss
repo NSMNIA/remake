@@ -22,6 +22,7 @@
 body {
     margin: 0;
     padding: 0;
+    font-size: 0.97222vw;
 }
 
 .videos {
@@ -82,20 +83,51 @@ body {
                 div {
                     transition-property: opacity, transform;
                     transition-duration: 0.5s;
-                    transition-timing-function: ease-in-out;
-                    transform-origin: left;
+                    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+                    transform-origin: 50% 80% 0px;
                     display: inline-block;
                     opacity: 0;
                     transform: scale(0.7);
                 }
             }
-
-            &.active {
-                span div {
-                    opacity: 1;
-                    transform: scale(1);
-                }
+        }
+        &.active {
+            span div {
+                opacity: 1;
+                transform: scale(1);
             }
+        }
+    }
+}
+
+header {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    line-height: 1.6;
+    pointer-events: none;
+    top: 0;
+    user-select: none;
+    width: 100%;
+
+    .logo {
+        display: inline-block;
+        margin-left: 4.16667%;
+        margin-top: 4.5rem;
+        overflow: hidden;
+        pointer-events: auto;
+        position: relative;
+        width: 5.7rem;
+
+        span {
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+        }
+
+        img {
+            display: block;
         }
     }
 }

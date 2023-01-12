@@ -25,11 +25,19 @@ const App = () => {
 
         if (title.current) {
             const titleChildren = title.current.children;
+            let delay = 0.5;
             for (let i = 0; i < titleChildren.length; i++) {
                 const span = titleChildren[i] as HTMLSpanElement;
                 for (let j = 0; j < span.children.length; j++) {
                     const child = span.children[j] as HTMLDivElement;
-                    child.style.transitionDelay = `${(i + 1) * 0.5}s`;
+                    for (let k = 0; k < child.children.length; k++) {
+                        const childChild = child.children[k] as HTMLDivElement;
+                        childChild.style.transitionDelay = `${delay}s`;
+                        delay += 0.3;
+                        setTimeout(() => {
+                            childChild.style.transitionDelay = "";
+                        }, delay * 1000 + 500);
+                    }
                 }
             }
 
@@ -37,10 +45,27 @@ const App = () => {
                 title.current?.classList.add("active");
             }, 1500);
         }
+
+        return () => {
+            intro.current?.removeEventListener("ended", () => {
+                if (introLoop.current) {
+                    introLoop.current.style.zIndex = "3";
+                    introLoop.current.play();
+                }
+            });
+        };
     }, []);
 
     return (
         <>
+            <header>
+                <div className="logo">
+                    <a href="/">
+                        <span>Home</span>
+                        <img src="https://useplink.com/assets/images/logo--light.svg" alt="Plink" width="57" height="23" />
+                    </a>
+                </div>
+            </header>
             <section className="intro">
                 <div className="videos">
                     <video className="video--intro" muted={true} playsInline={true} ref={intro}>
@@ -52,8 +77,8 @@ const App = () => {
                         <source src="https://useplink.com/assets/images/frontpage/loop.mp4" type="video/mp4" />
                     </video>
                 </div>
-                <div className="intro--titles">
-                    <h1 className="title" ref={title}>
+                <div className="intro--titles" ref={title}>
+                    <h1 className="title">
                         <span>
                             <div>Send&nbsp;</div>
                             <div>payment&nbsp;</div>
@@ -68,7 +93,18 @@ const App = () => {
                         </span>
                     </h1>
                     <h2 className="baseline">
-                        <div>86% of our payment requests get paid within 12 hours.</div>
+                        <span>
+                            <div>86%&nbsp;</div>
+                            <div>of&nbsp;</div>
+                            <div>our&nbsp;</div>
+                            <div>payment&nbsp;</div>
+                            <div>requests&nbsp;</div>
+                            <div>get&nbsp;</div>
+                            <div>paid&nbsp;</div>
+                            <div>within&nbsp;</div>
+                            <div>12&nbsp;</div>
+                            <div>hours.</div>
+                        </span>
                     </h2>
                 </div>
             </section>
